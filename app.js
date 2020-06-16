@@ -6,7 +6,7 @@ const Combinatorics = require("js-combinatorics");
 const fs = require('fs')
 
 let pointDistances = [];
-let points = new Map();
+let points = [];
 
 const params = {
   minTotalDistance: 3200, //meters
@@ -18,16 +18,13 @@ const params = {
 const json = require('./points.json')
 
 json.features.map(function (a) {
-  points.set(a.properties.title, a.geometry.coordinates);
+  points[a.properties.title] = a.geometry.coordinates;
 });
 console.dir(points)
 
-const obj = Object.fromEntries(points);
-console.dir(points)
-
 // Get all possible combinations of points to compare
-Combinatorics.combination(Object.keys(obj), 2).map(function (a) {
-  let distance = geolib.getDistance(obj[a[0]], obj[a[1]]);
+Combinatorics.combination(Object.keys(points), 2).map(function (a) {
+  let distance = geolib.getDistance(points[a[0]], points[a[1]]);
 
   //Only add point distances that are between our params
   //   if (distance > params.minDistanceBetween && distance < params.maxDistanceBetween) {
