@@ -26,3 +26,10 @@ let lastPoint = false;
       break;
     }
   }
+
+
+
+  //   a.forEach(function (b) {
+//     //Create a list of our coordinates
+//     coordinatesPaths.push(points[b]);
+//   });
