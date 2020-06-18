@@ -10,7 +10,7 @@ const params = {
   minTotalDistance: 3200, //meters
   maxTotalDistance: 5600, //meters
   minDistanceBetween: 30, //meters 30
-  maxDistanceBetween: 1000, //meters 105
+  maxDistanceBetween: 500, //meters 105
 };
 
 const json = require("./points.json");
@@ -19,8 +19,12 @@ json.features.map(function (a) {
   points[a.properties.title] = a.geometry.coordinates;
 });
 
+//Get the area of all points
+let area = geolib.getAreaOfPolygon(Object.values(points));
+console.log('Area: ' + geolib.convertArea(area, 'km2') + ' square kilometer')
+
 // Get all possible combinations of points to compare
-console.time("point distance");
+// console.time("point distance");
 Combinatorics.combination(Object.keys(points), 2).map(function (a) {
   let distance = geolib.getDistance(points[a[0]], points[a[1]]);
 
@@ -32,18 +36,15 @@ Combinatorics.combination(Object.keys(points), 2).map(function (a) {
     pointDistances[a] = distance;
   }
 });
-console.timeEnd("point distance");
+// console.timeEnd("point distance");
 console.dir(pointDistances);
 
 
 
-console.time("routes");
+// console.time("routes");
 
 //Get all possible combinations of routes
-let routes = Combinatorics.power(Object.keys(points));
-
-// Iterate through the routes and get their distances
-routes.forEach(function (a) {
+Combinatorics.power(Object.keys(points)).forEach(function (a) {
   let coordinatesPaths = [];
   let prevCoord = false;
   let badRoute = false;
@@ -90,6 +91,7 @@ routes.forEach(function (a) {
 });
 // console.dir(routeDistances);
 console.log("Total routes: " + Object.keys(routeDistances).length);
+// console.dir(routeDistances)
 
-console.timeEnd("routes");
+// console.timeEnd("routes");
 console.timeEnd("app");
