@@ -1,36 +1,28 @@
 // tools.js
 // ========
-const params = {
-  minTotalDistance: 3200, //meters 3200
-  maxTotalDistance: 6000, //meters 6000
-  minDistPerLeg: 30, //meters
-  maxDistPerLeg: 500, //meters
-  routeLegsMin: 4,
-  routeLegsMax: 16,
-  routesNeeded: 10,
-};
+const config = require('config');
 
 module.exports = {
   between: function (
     x,
-    min = params.minDistPerLeg,
-    max = params.maxDistPerLeg
+    min = config.get('distance.perLeg.min'),
+    max = config.get('distance.perLeg.max')
   ) {
     //Check if x is between two numbers - defaults to min and max per leg
     return x >= min && x <= max;
   },
   betweenTotal: function (
     x,
-    min = params.minTotalDistance,
-    max = params.maxTotalDistance
+    min = config.get('distance.total.min'),
+    max = config.get('distance.total.max')
   ) {
     //Check if x is between two numbers - defaults to min and max per leg
     return x >= min && x <= max;
   },
   betweenLegAmt: function (
     x,
-    min = params.routeLegsMin,
-    max = params.routeLegsMax
+    min = config.get('routes.legs.min'),
+    max = config.get('routes.legs.max')
   ) {
     return x >= min && x <= max;
   },
@@ -39,7 +31,7 @@ module.exports = {
     let randomRouteKeys = [];
     let randomRoutes = [];
 
-    for (let step = 0; step < params.routesNeeded; step++) {
+    for (let step = 0; step < config.get('routes.needed'); step++) {
       randomRouteKeys.push(keys[Math.floor(Math.random()*keys.length)])
     }
     for (var i = 0; i < randomRouteKeys.length; i++) {

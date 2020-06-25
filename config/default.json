@@ -1,0 +1,19 @@
+{
+  "distance": {
+    "total": {
+      "min": 3200,
+      "max": 6000
+    },
+    "perLeg": {
+      "min": 30,
+      "max": 500
+    }
+  },
+  "routes": {
+    "legs": {
+      "min": 4,
+      "max": 16
+    },
+    "needed": 10
+  }
+}

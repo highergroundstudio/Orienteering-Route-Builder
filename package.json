@@ -4,6 +4,7 @@
   "description": "Build orienteering routes from a list of points",
   "main": "app.js",
   "dependencies": {
+    "config": "^3.3.1",
     "geolib": "^3.3.1",
     "js-combinatorics": "^0.6.0"
   },
