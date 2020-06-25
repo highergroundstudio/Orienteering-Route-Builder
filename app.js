@@ -1,4 +1,5 @@
 console.time("app");
+
 const geolib = require("geolib");
 const Combinatorics = require("js-combinatorics");
 const tools = require("./tools");
@@ -34,41 +35,59 @@ console.time("routes");
 //Get all possible combinations of routes
 Combinatorics.power(Object.keys(points)).forEach(function (routeLeg) {
   let coordinatesPaths = [];
-  let prevCoord = false;
+  let prevCoord;
+  let firstItem = true;
+
+  // console.log(routeLeg.length);
+
+  //Check if our amount of legs is between our params
+  if(!tools.betweenLegAmt(routeLeg.length)){
+    //Exit
+    return;
+  }
 
   //Create a list of our coordinates
-  for (let i = 1; i < routeLeg.length; i++) {
-
+  for (var i = 0; i < routeLeg.length; i++) {
     let currCoord = points[routeLeg[i]];
-    let distanceLeg = geolib.getDistance(currCoord, prevCoord);
 
-    console.log(currCoord);
-
-    //Set previous coordinate as current
-    prevCoord = points[routeLeg[i]];;
-
-    if (tools.between(distanceLeg)) {
-      console.log("Good distance: " + distanceLeg);
-      coordinatesPaths.push(currCoord);
-    } else {
-      console.log("Bad distance: " + distanceLeg);
-      break;
+    if (firstItem) {
+      prevCoord = currCoord;
+      firstItem = false;
+      continue;
     }
 
-    //Get the total distance of the route
-    let distanceTotal = geolib.getPathLength(coordinatesPaths);
-    console.log(distanceTotal);
+    let distanceLeg = geolib.getDistance(currCoord, prevCoord);
 
-    //Only add point distances that are between our params
-    tools.between(distanceTotal, 1, 10000)
-      ? (routeDistances[currCoord] = distanceTotal)
-      : false;
+    // console.log(distanceLeg)
 
-    // console.log(Object.keys(routeDistances).length);
-  }
+    //Set previous coordinate as current
+    prevCoord = currCoord;
+
+    if (tools.between(distanceLeg)) {
+      // console.log("Good distance: " + distanceLeg);
+      coordinatesPaths.push(currCoord);
+    } else {
+      // console.log("Bad distance: " + distanceLeg);
+      break;
+    }
+  } //end for loop
+
+  //Get the total distance of the route
+  let distanceTotal = geolib.getPathLength(coordinatesPaths);
+  // console.log(distanceTotal);
+
+  //Only add point distances that are between our params
+  tools.betweenTotal(distanceTotal)
+    ? (routeDistances[routeLeg] = distanceTotal)
+    : false;
+
+  // console.log(Object.keys(routeDistances).length);
 });
 // console.dir(routeDistances);
 console.log("Total routes: " + Object.keys(routeDistances).length);
+// console.dir(routeDistances)
+
+console.dir(tools.randomRoutes(routeDistances))
 
 console.timeEnd("routes");
 console.timeEnd("app");
