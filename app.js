@@ -9,7 +9,7 @@ let routeDistances = [];
 let points = [];
 
 //Get our geojson file
-const json = require("./points.json");
+const json = require("./locs.json");
 
 //Get our points from our geojson file and convert to obj
 json.features.map(function (a) {
@@ -41,7 +41,7 @@ Combinatorics.power(Object.keys(points)).forEach(function (routeLeg) {
   // console.log(routeLeg.length);
 
   //Check if our amount of legs is between our params
-  if(!tools.betweenLegAmt(routeLeg.length)){
+  if (!tools.betweenLegAmt(routeLeg.length)) {
     //Exit
     return;
   }
@@ -87,7 +87,7 @@ Combinatorics.power(Object.keys(points)).forEach(function (routeLeg) {
 console.log("Total routes: " + Object.keys(routeDistances).length);
 // console.dir(routeDistances)
 
-console.dir(tools.randomRoutes(routeDistances))
+console.dir(tools.randomRoutes(routeDistances));
 
 console.timeEnd("routes");
 console.timeEnd("app");
