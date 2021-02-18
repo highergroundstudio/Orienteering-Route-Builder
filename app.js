@@ -3,6 +3,7 @@ console.time("app");
 const geolib = require("geolib");
 const Combinatorics = require("js-combinatorics");
 const tools = require("./tools");
+const { dist } = require('fluxunit');
 
 let pointDistances = [];
 let routeDistances = [];
@@ -28,7 +29,7 @@ Combinatorics.combination(Object.keys(points), 2).map(function (a) {
   tools.between(distance) ? (pointDistances[a] = distance) : false;
 });
 
-console.dir(pointDistances);
+// console.dir(pointDistances);
 
 console.time("routes");
 
